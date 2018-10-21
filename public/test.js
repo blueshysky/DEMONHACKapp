@@ -13,15 +13,35 @@ firebase.initializeApp(config);
 var email = "email";
 var acc = document.getElementById("login");
 
+
 acc.onclick = function(){
+  var username = document.forms['fram']['name1'].value;
+  var password = document.forms['fram']['pass1'].value;
   var database = firebase.database();
-  var encodedImg = database.ref('email');
+  var encodedImg = database.ref('user');
   var result = encodedImg.push({
-      password :'password',
+      username : username,
+      password : password,
       coins : '0'
     });
     // console.log('123')
   };
 
+// Import Admin SDK
+var pointer = firebase.database().ref().child("user");
 
-  console.log('default');
+  var arrayInfo = [];
+
+// Retrieve new posts as they are added to our database
+pointer.on("child_added", snap =>{
+  var user = snap.child('username').val();
+  var coins = snap.child('coins').val();
+  var password = snap.child('password').val();
+  var packAge = [user, password, coins];
+  arrayInfo.push(packAge);
+
+});
+
+// var timer = setInterval(function(){
+//   console.log(arrayInfo);
+// }, 3000);
